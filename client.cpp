@@ -41,8 +41,8 @@
 #include <binder/IPCThreadState.h>
 
 // Ajouter
-#include <com/formation/sysand/ISysAndService.h>
-#include <com/formation/sysand/BpSysAndService.h>
+#include "com/android/sampservice/BpSampService.h"
+#include "com/android/sampservice/BpSampService.h"
 
 using namespace android;
 
@@ -71,15 +71,17 @@ void assert_fail(const char *file, int line, const char *func, const char *expr)
 // Where to print the parcel contents: aout, alog, aerr. alog doesn't seem to work.
 #define PLOG aout
 
-// Helper function to get a hold of the "Demo" service.
-sp<com::formation::sysand::ISysAndService> getDemoServ() {
+// Helper function to get a hold of the service.
+sp<com::android::sampservice::ISampService> getDemoServ() {
     sp<IServiceManager> sm = defaultServiceManager();
     ASSERT(sm != 0);
-    sp<IBinder> binder = sm->getService(String16("Demo")); // Remplacer le nom par service list et le nom affiché
-    // TODO: If the "Demo" service is not running, getService times out and binder == 0.
+    sp<IBinder> binder = sm->getService
+	    (String16("com.android.sampservice.ISampService")); 
+    // Remplacer le nom par service list et le nom affiché
+    // TODO: If the service is not running, getService times out and binder == 0.
     ASSERT(binder != 0);
-    sp<com::formation::sysand::ISysAndService> demo = 
-         interface_cast<com::formation::sysand::ISysAndService>(binder);
+    sp<com::android::sampservice::ISampService> demo = 
+         interface_cast<com::android::sampservice::ISampService>(binder);
     ASSERT(demo != 0);
     return demo;
 }
@@ -90,7 +92,7 @@ int main() {
         INFO("We're the client: ");
 
 
-        sp<com::formation::sysand::ISysAndService> demo = getDemoServ();
+        sp<com::android::sampservice::ISampService> demo = getDemoServ();
         
         const int32_t a = 5;
         const int32_t b = 15;
