@@ -41,7 +41,7 @@
 #include <binder/IPCThreadState.h>
 
 // Ajouter
-#include "com/android/sampservice/BpSampService.h"
+#include "com/android/sampservice/ISampService.h"
 #include "com/android/sampservice/BpSampService.h"
 
 using namespace android;
@@ -94,15 +94,16 @@ int main() {
 
         sp<com::android::sampservice::ISampService> demo = getDemoServ();
         
-        const int32_t a = 5;
+        const int32_t a = 10;
         const int32_t b = 15;
         int32_t sum;
+	int32_t diff;
+
         demo->add(a, b, &sum);
         ALOGD("Addition result: %i + %i = %i", a, b, sum);
 
-    return 0;
-}
+	demo->sub(b, a, &diff);
+        ALOGD("Substraction result: %i + %i = %i", b, a, diff);
 
-/*
-    Single-threaded service, single-threaded client.
- */
+        return 0;
+}
